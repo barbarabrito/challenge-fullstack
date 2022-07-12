@@ -1,0 +1,66 @@
+.main_container{
+    display: flex;
+}
+
+.register{
+    display: contents;
+}
+
+.form_container{
+    width: 300px;
+    margin: 2em auto;
+    padding: 1em;
+}
+
+.form_container form{
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius:4px;
+}
+
+.form_container input{
+    width: 100%;
+    padding: 0.5em;
+    margin-bottom: 1em;
+}
+
+.panel{
+    width: 800px;
+    padding: 1em;
+}
+
+.geolocal{
+    margin-top: 1em;
+    display: flex;
+}
+
+#btn_register{
+    width: 100%;
+    color: #fff;
+    background-color: #3cbc8d;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.reset-container{
+    margin-top: 10px;
+    border: 1px solid gray;
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+    border-radius:4px;
+}
+
+#btn-reset{
+    width: 100%;
+    color: #fff;
+    background-color: #ff0000;
+    border: none;
+    padding: 10px;
+    border-radius: 3px; 
+    cursor: pointer;
+    font-weight: bold;
+}
