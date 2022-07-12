@@ -1,6 +1,7 @@
 const Delivery = require('../models/Delivery')
 
 module.exports = class DeliveryController {
+
     static async register(req, res){
 
         const nome = req.body.nome;
@@ -19,5 +20,14 @@ module.exports = class DeliveryController {
         }catch(error){
             res.status(400).json({msg: error})
         }
+    }
+
+    static async getAllDeliveries(req, res) {
+
+    const deliveries = await Delivery.find().sort();
+
+        res.status(200).json({
+            deliveries: deliveries,
+        })
     }
 }
