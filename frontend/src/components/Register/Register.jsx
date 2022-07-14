@@ -18,6 +18,7 @@ function Register() {
     const [estado, setEstado] = useState('');
     const [pais, setPais] = useState('');
     const [deliveries, setDeliveries] = useState([]);
+    const [updatedDelivery, setUpdatedDelivery] = useState([]);
 
     async function handleSearchAddress(e) {
 
@@ -36,7 +37,7 @@ function Register() {
                 setPais(data[0].address.country)
             })
             .catch((err) => {
-                setError(err);
+                console.log(err);
             })
     }
 
@@ -44,7 +45,7 @@ function Register() {
 
         e.preventDefault();
 
-        const geolocalizacao = {latitude, longitude};
+        const geolocalizacao = { latitude, longitude };
 
         const endereco = {
             logradouro,
@@ -63,19 +64,41 @@ function Register() {
         })
         .then(response => {
             console.log(response.data.deliveries)
+            setUpdatedDelivery(...deliveries, updatedDelivery)
+            setNome('')
+            setPeso('')
+            setEnderecoCliente('')
+            setNumero('')
+            setLatitude('')
+            setLongitude('')
         })
         .catch(error => {
-            console.log(error)
+             console.log(error)
         })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         api.get('/deliveries')
-        .then((response)=> {
-            setDeliveries(response.data.deliveries) 
-            console.log(response.data)
-        })
-    },[])
+            .then((response) => {
+                setDeliveries(response.data.deliveries)
+                console.log(response.data)
+            })
+    }, [updatedDelivery])
+
+    async function handleDeleteDelivery(id) {
+        if (window.confirm("Tem certeza que deseja deletar?")) {
+            const data = await api.delete(`/deliveries/${id}`)
+                .then(response => {
+                    const updated = deliveries.filter((deliveries) => deliveries._id != id)
+                    setDeliveries(updated)
+                    return response.data
+                })
+                .catch(error => {
+                    console.log('Algo deu errado', error);
+                })
+        }
+
+    }
 
     return (
         <main className="main_container">
@@ -114,19 +137,27 @@ function Register() {
                         <button id="btn-search" onClick={(e) => handleSearchAddress(e)}>&#x1F50D;</button>
 
                         <span className="geolocal">
-                            <input type="text"
-                                id="latitude"
-                                name="latitude"
-                                placeholder="Latitude"
-                                value={latitude}
-                                disabled />
+                            <div>
+                                <label htmlFor="latitude">latitude</label>
+                                <input type="text"
+                                    id="latitude"
+                                    name="latitude"
+                                    placeholder="Latitude"
+                                    value={latitude}
+                                    disabled 
+                                />
+                            </div>
                             &nbsp;
-                            <input type="text"
-                                id="longitude"
-                                name="longitude"
-                                placeholder="Longitude"
-                                value={longitude}
-                                disabled />
+                            <div>
+                                <label htmlFor="longitude">longitude</label>
+                                <input type="text"
+                                    id="longitude"
+                                    name="longitude"
+                                    placeholder="Longitude"
+                                    value={longitude}
+                                    disabled 
+                                />
+                            </div>
                         </span>
 
                         <button id="btn_register" onClick={(e) => handleRegisterDelivery(e)}>Registrar cliente</button>
@@ -137,11 +168,9 @@ function Register() {
                 </div>
             </div>
 
-            <hr />
-
             <div className="panel">
-                <div className="container_p">
-                    <MapPanel deliveries ={deliveries}/>
+                <div className="container_map">
+                    <MapPanel deliveries={deliveries} />
                 </div>
                 <div className="container_table">
                     <table>
@@ -154,6 +183,7 @@ function Register() {
                                 <th>Peso</th>
                                 <th>Lat</th>
                                 <th>Lng</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -166,6 +196,7 @@ function Register() {
                                     <td>{delivery.peso}</td>
                                     <td>{delivery.endereco.geolocalizacao.latitude}</td>
                                     <td>{delivery.endereco.geolocalizacao.longitude}</td>
+                                    <td><button id="btn_delete_delivery" onClick={(e) => { handleDeleteDelivery(delivery._id) }}>Deletar</button></td>
                                 </tr>
                             ))}
                         </tbody>

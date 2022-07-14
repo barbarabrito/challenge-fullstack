@@ -24,10 +24,22 @@ module.exports = class DeliveryController {
 
     static async getAllDeliveries(req, res) {
 
-    const deliveries = await Delivery.find().sort();
+        const deliveries = await Delivery.find().sort();
 
         res.status(200).json({
             deliveries: deliveries,
         })
+    }
+
+    static async removeDelivery(req, res){
+        
+        const id = req.params.id;
+
+        try{
+            await Delivery.findByIdAndRemove(id);
+            res.status(200).json('Removido')
+        }catch(error){
+            res.status(400).json('error')
+        }
     }
 }

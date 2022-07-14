@@ -1,41 +1,45 @@
-.main_container{
+.main_container {
     display: flex;
 }
 
-.register{
+.register {
     display: contents;
 }
 
-.form_container{
-    width: 300px;
+.form_container {
+    width: 350px;
     margin: 2em auto;
     padding: 1em;
 }
 
-.form_container form{
+.form_container form {
     padding: 10px;
-    border: 1px solid gray;
-    border-radius:4px;
+    border: 1px solid rgb(185, 182, 182);
+    border-radius: 4px;
 }
 
-.form_container input{
+.form_container input {
     width: 100%;
     padding: 0.5em;
     margin-bottom: 1em;
+    border: 1px solid rgb(185, 182, 182);
+}
+.form_container label{
+    color: gray;
 }
 
-.panel{
+.panel {
     width: 800px;
     padding: 1em;
     margin: 0 auto;
 }
 
-.geolocal{
+.geolocal {
     margin-top: 1em;
     display: flex;
 }
 
-#btn_register{
+#btn_register {
     width: 100%;
     color: #fff;
     background-color: #3cbc8d;
@@ -46,48 +50,62 @@
     font-weight: bold;
 }
 
-.reset-container{
+.reset-container {
     margin-top: 10px;
-    border: 1px solid gray;
+    border: 1px solid rgb(185, 182, 182);
     width: 100%;
     text-align: center;
     padding: 8px;
-    border-radius:4px;
+    border-radius: 4px;
 }
 
-#btn-reset{
+#btn-reset {
     width: 100%;
     color: #fff;
     background-color: #ff0000;
     border: none;
     padding: 10px;
-    border-radius: 3px; 
+    border-radius: 3px;
     cursor: pointer;
     font-weight: bold;
 }
 
-.container_p{
-    width: 500px;
-    height: 750px;
+.container_map {
+    width: 750px;
+    height: 500px;
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
-  }
-  
-  th, td {
-    text-align: left;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even){background-color: #f2f2f2}
-  
-  th {
-    background-color: #04AA6D;
-    color: white;
-  }
+}
 
-  .container_table{
-    margin: 0 auto;
-  }
+th,
+td {
+    text-align: left;
+    padding:8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+th {
+    background-color: #3cbc8d;
+    color: white;
+}
+
+.container_table {
+    margin: 4em auto;
+}
+
+#btn_delete_delivery{
+    background-color:transparent;
+    color: red;
+    border: none;
+    border-radius: 5px;
+    padding: 0.4em;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: u;
+}
