@@ -1,6 +1,8 @@
 import './Register.css';
 import { useState, useEffect } from "react";
-import api from '../services/api'; 
+import api from '../../services/api';
+import MapPanel from '../Map/MapPanel';
+
 
 function Register() {
 
@@ -15,39 +17,43 @@ function Register() {
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
     const [pais, setPais] = useState('');
-    const [endereco, setEndereco] = useState('');
+    const [deliveries, setDeliveries] = useState([]);
 
-    async function handleSearchAddress(e){
+    async function handleSearchAddress(e) {
 
         e.preventDefault();
 
         fetch(`https://nominatim.openstreetmap.org/search/${enderecoCliente}?format=json&addressdetails=1`)
-        .then((response) => response.json())
-        .then(data => {
-            console.log(data)
-            setLatitude(data[0].lat)
-            setLongitude(data[0].lon)
-            setBairro(data[0].address.city_district)
-            setCidade(data[0].address.city)
-            setEstado(data[0].address.state)
-            setPais(data[0].address.country)
-        })
-        .catch((err) => {
-            setError(err);
-        })
-    }  
+            .then((response) => response.json())
+            .then(data => {
+                console.log(data)
+                setLogradouro(data[0].address.road)
+                setLatitude(data[0].lat)
+                setLongitude(data[0].lon)
+                setBairro(data[0].address.city_district)
+                setCidade(data[0].address.city)
+                setEstado(data[0].address.state)
+                setPais(data[0].address.country)
+            })
+            .catch((err) => {
+                setError(err);
+            })
+    }
 
-    function handleRegisterDelivery(e){
+    function handleRegisterDelivery(e) {
+
         e.preventDefault();
 
+        const geolocalizacao = {latitude, longitude};
+
         const endereco = {
+            logradouro,
             bairro,
             numero,
             cidade,
             estado,
             pais,
-            latitude,
-            longitude
+            geolocalizacao
         };
 
         api.post('/deliveries/register', {
@@ -55,14 +61,22 @@ function Register() {
             peso,
             endereco
         })
-        .then(response => {  
-            console.log(response.data)
+        .then(response => {
+            console.log(response.data.deliveries)
         })
         .catch(error => {
-           console.log(error)
+            console.log(error)
         })
     }
-        
+
+    useEffect(()=>{
+        api.get('/deliveries')
+        .then((response)=> {
+            setDeliveries(response.data.deliveries) 
+            console.log(response.data)
+        })
+    },[])
+
     return (
         <main className="main_container">
             <div className="register">
@@ -90,7 +104,7 @@ function Register() {
                             placeholder="Endereço da Entrega"
                             onChange={(e) => setEnderecoCliente(e.target.value)}
                         />
-                       <input
+                        <input
                             type="text" id="numero"
                             name="numero"
                             value={numero}
@@ -105,14 +119,14 @@ function Register() {
                                 name="latitude"
                                 placeholder="Latitude"
                                 value={latitude}
-                            disabled />
+                                disabled />
                             &nbsp;
                             <input type="text"
                                 id="longitude"
                                 name="longitude"
                                 placeholder="Longitude"
                                 value={longitude}
-                            disabled />
+                                disabled />
                         </span>
 
                         <button id="btn_register" onClick={(e) => handleRegisterDelivery(e)}>Registrar cliente</button>
@@ -126,8 +140,37 @@ function Register() {
             <hr />
 
             <div className="panel">
-                {/* <h3>panel</h3>/ */}
-                
+                <div className="container_p">
+                    <MapPanel deliveries ={deliveries}/>
+                </div>
+                <div className="container_table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Rua</th>
+                                <th>Cidade</th>
+                                <th>País</th>
+                                <th>Peso</th>
+                                <th>Lat</th>
+                                <th>Lng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {deliveries.map(delivery => (
+                                <tr key={delivery._id}>
+                                    <td>{delivery.nome}</td>
+                                    <td>{delivery.endereco.logradouro}</td>
+                                    <td>{delivery.endereco.cidade}</td>
+                                    <td>{delivery.endereco.pais}</td>
+                                    <td>{delivery.peso}</td>
+                                    <td>{delivery.endereco.geolocalizacao.latitude}</td>
+                                    <td>{delivery.endereco.geolocalizacao.longitude}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     )

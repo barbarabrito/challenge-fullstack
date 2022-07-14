@@ -27,6 +27,7 @@
 .panel{
     width: 800px;
     padding: 1em;
+    margin: 0 auto;
 }
 
 .geolocal{
@@ -64,3 +65,29 @@
     cursor: pointer;
     font-weight: bold;
 }
+
+.container_p{
+    width: 500px;
+    height: 750px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even){background-color: #f2f2f2}
+  
+  th {
+    background-color: #04AA6D;
+    color: white;
+  }
+
+  .container_table{
+    margin: 0 auto;
+  }
