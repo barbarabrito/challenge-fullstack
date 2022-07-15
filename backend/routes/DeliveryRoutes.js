@@ -1,11 +1,12 @@
 const router = require('express').Router();
 
-const DeliveryController = require('../controllers/DeliveryController')
+const DeliveryController = require('../controllers/DeliveryController');
 
-router.post('/register', DeliveryController.register)
+router.post('/register', DeliveryController.register);
 
-router.get('/', DeliveryController.getAllDeliveries)
+router.get('/', DeliveryController.getAllDeliveries);
 
-router.delete('/:id', DeliveryController.removeDelivery)
+router.delete('/:id', DeliveryController.removeDelivery);
 
-module.exports = router
+
+module.exports = router;

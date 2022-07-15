@@ -35,6 +35,7 @@ function Register() {
                 setCidade(data[0].address.city)
                 setEstado(data[0].address.state)
                 setPais(data[0].address.country)
+                setEnderecoCliente(data[0].address.road)
             })
             .catch((err) => {
                 console.log(err);
@@ -87,7 +88,7 @@ function Register() {
 
     async function handleDeleteDelivery(id) {
         if (window.confirm("Tem certeza que deseja deletar?")) {
-            const data = await api.delete(`/deliveries/${id}`)
+            await api.delete(`/deliveries/${id}`)
                 .then(response => {
                     const updated = deliveries.filter((deliveries) => deliveries._id != id)
                     setDeliveries(updated)
@@ -98,6 +99,9 @@ function Register() {
                 })
         }
 
+    }
+    function handleReset(){
+        setDeliveries([]); 
     }
 
     return (
@@ -111,6 +115,7 @@ function Register() {
                             placeholder="Nome Cliente"
                             value={nome}
                             onChange={(e) => setNome(e.target.value)}
+                            required
                         />
                         <input
                             type="text"
@@ -119,22 +124,28 @@ function Register() {
                             placeholder="Peso da Entrega"
                             value={peso}
                             onChange={(e) => setPeso(e.target.value)}
+                            required
                         />
-                        <input
-                            type="text" id="enedereco_cliente"
-                            name="enderecoCliente"
-                            value={enderecoCliente}
-                            placeholder="Endereço da Entrega"
-                            onChange={(e) => setEnderecoCliente(e.target.value)}
-                        />
-                        <input
-                            type="text" id="numero"
-                            name="numero"
-                            value={numero}
-                            placeholder="Numero"
-                            onChange={(e) => setNumero(e.target.value)}
-                        />
-                        <button id="btn-search" onClick={(e) => handleSearchAddress(e)}>&#x1F50D;</button>
+                        <span className="container_search">
+                            <input
+                                type="text" id="enedereco_cliente"
+                                name="enderecoCliente"
+                                value={enderecoCliente}
+                                placeholder="Endereço da Entrega"
+                                onChange={(e) => setEnderecoCliente(e.target.value)}
+                                required
+                            />
+                            &nbsp;
+                            <input
+                                type="text" id="numero"
+                                name="numero"
+                                value={numero}
+                                placeholder="N°"
+                                onChange={(e) => setNumero(e.target.value)}
+                                required
+                            />
+                            <button id="btn_search" onClick={(e) => handleSearchAddress(e)}>Buscar</button>
+                        </span>
 
                         <span className="geolocal">
                             <div>
@@ -163,7 +174,7 @@ function Register() {
                         <button id="btn_register" onClick={(e) => handleRegisterDelivery(e)}>Registrar cliente</button>
                     </form>
                     <div className="reset-container">
-                        <button id="btn-reset">Resetar cadastro</button>
+                        <button id="btn-reset" onClick={(e) => handleReset()}>Resetar cadastro</button>
                     </div>
                 </div>
             </div>

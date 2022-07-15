@@ -32,7 +32,7 @@ module.exports = class DeliveryController {
     }
 
     static async removeDelivery(req, res){
-        
+
         const id = req.params.id;
 
         try{
