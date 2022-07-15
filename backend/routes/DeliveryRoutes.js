@@ -8,5 +8,4 @@ router.get('/', DeliveryController.getAllDeliveries);
 
 router.delete('/:id', DeliveryController.removeDelivery);
 
-
 module.exports = router;

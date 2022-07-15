@@ -65,7 +65,7 @@ function Register() {
         })
         .then(response => {
             console.log(response.data.deliveries)
-            setUpdatedDelivery(...deliveries, updatedDelivery)
+            setUpdatedDelivery([...deliveries, updatedDelivery])
             setNome('')
             setPeso('')
             setEnderecoCliente('')
@@ -74,7 +74,7 @@ function Register() {
             setLongitude('')
         })
         .catch(error => {
-             console.log(error)
+            console.log(error)
         })
     }
 
@@ -100,8 +100,18 @@ function Register() {
         }
 
     }
-    function handleReset(){
-        setDeliveries([]); 
+
+    async function handleReset(){
+        if (window.confirm("Tem certeza que deseja apagar todos os dados?")) {
+            await api.delete('/removeall')
+                .then(response => {
+                    setDeliveries([])
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.log('Algo deu errado', error);
+                })
+        }
     }
 
     return (
@@ -183,36 +193,38 @@ function Register() {
                 <div className="container_map">
                     <MapPanel deliveries={deliveries} />
                 </div>
-                <div className="container_table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Rua</th>
-                                <th>Cidade</th>
-                                <th>País</th>
-                                <th>Peso</th>
-                                <th>Lat</th>
-                                <th>Lng</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {deliveries.map(delivery => (
-                                <tr key={delivery._id}>
-                                    <td>{delivery.nome}</td>
-                                    <td>{delivery.endereco.logradouro}</td>
-                                    <td>{delivery.endereco.cidade}</td>
-                                    <td>{delivery.endereco.pais}</td>
-                                    <td>{delivery.peso}</td>
-                                    <td>{delivery.endereco.geolocalizacao.latitude}</td>
-                                    <td>{delivery.endereco.geolocalizacao.longitude}</td>
-                                    <td><button id="btn_delete_delivery" onClick={(e) => { handleDeleteDelivery(delivery._id) }}>Deletar</button></td>
+                {deliveries.length > 0 &&
+                    <div className="container_table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Rua</th>
+                                    <th>Cidade</th>
+                                    <th>País</th>
+                                    <th>Peso</th>
+                                    <th>Lat</th>
+                                    <th>Lng</th>
+                                    <th>Ações</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {deliveries.map(delivery => (
+                                    <tr key={delivery._id}>
+                                        <td>{delivery.nome}</td>
+                                        <td>{delivery.endereco.logradouro}</td>
+                                        <td>{delivery.endereco.cidade}</td>
+                                        <td>{delivery.endereco.pais}</td>
+                                        <td>{delivery.peso}</td>
+                                        <td>{delivery.endereco.geolocalizacao.latitude}</td>
+                                        <td>{delivery.endereco.geolocalizacao.longitude}</td>
+                                        <td><button id="btn_delete_delivery" onClick={(e) => { handleDeleteDelivery(delivery._id) }}>Deletar</button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
         </main>
     )
