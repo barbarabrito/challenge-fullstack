@@ -19,6 +19,7 @@ function Register() {
     const [pais, setPais] = useState('');
     const [deliveries, setDeliveries] = useState([]);
     const [updatedDelivery, setUpdatedDelivery] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     async function handleSearchAddress(e) {
 
@@ -82,6 +83,7 @@ function Register() {
         api.get('/deliveries')
             .then((response) => {
                 setDeliveries(response.data.deliveries)
+                setLoading(false)
                 console.log(response.data)
             })
     }, [updatedDelivery])
@@ -192,6 +194,9 @@ function Register() {
             <div className="panel">
                 <div className="container_map">
                     <MapPanel deliveries={deliveries} />
+                </div>
+                <div className="load" style={{textAlign:'center'}}>
+                    {loading && <p>carregando...</p>}
                 </div>
                 {deliveries.length > 0 &&
                     <div className="container_table">
